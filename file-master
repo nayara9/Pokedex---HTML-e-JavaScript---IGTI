@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pokedex</title>
+    </head>
+    <body>
+      <table id="pokedex">
+        <tr>
+          <td>Teste</td>
+        </tr>
+      </table>
+      <script>
+          async function capturar_pokemons() {
+             pokemons = []
+
+             for (let id = 1; id <= 10; id++) {
+                url = `https://pokeapi.co/api/v2/pokemon/${id}`
+
+                http_response = await fetch(url)
+                full_obj = await http_response.json()
+
+                pokemon = {
+                   name: full_obj["name"],
+                   image: full_obj['sprites']['front_default'],
+                   id: id
+                }
+
+                pokemons.push(pokemon) 
+             }
+            
+             // console.log(pokemons)
+             
+             exibir_pokemons_na_tabela(pokemons)
+          }
+
+         capturar_pokemons()
+        
+         function exibir_pokemons_na_tabela(pokemons) {
+           pokedex_table = document.getElementById("pokedex")
+
+           todas_linhas = ''
+
+           for (pokemon of pokemons) {
+               console.log(pokemon["id"])
+               id = pokemon["id"]
+               name = pokemon["name"]
+               img = pokemon["image"]
+               linha_str = `
+                  <tr>
+                     <td>
+                       <p><b>${id}: ${name} </></p>
+                       <img src="${img}" />
+                     </td>
+                  <tr/>
+               `
+
+               todas_linhas = todas_linhas + linha_str
+
+           }
+           
+           console.log(todas_linhas)
+
+           pokedex_table.innerHTML = todas_linhas
+         }
+      </script>
+    </body>
+</html>
